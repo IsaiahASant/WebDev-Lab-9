@@ -32,7 +32,7 @@
   <!-- You will add more sections below -->
    <section id="time-section" class="card mb-4">
     <div class="card-body">
-      <h2 class="h4">1. /api/time (text response)</h2>
+      <h2 class="h4">2. /api/time (text response)</h2>
       <button id="time-btn"
         class="btn btn-primary">
         Fetch /api/time
@@ -49,14 +49,13 @@
     <!-- part B.3-->
    <section id="greet-section" class="card mb-4">
     <div class="card-body">
-      <h2 class="h4">1. /api/greet (text response)</h2>
+      <h2 class="h4">3. /api/greet (text response)</h2>
       <button id="greet-btn"
         class="btn btn-primary">
         Fetch /api/greet
       </button>
 
       <input id="name-input" type="text" value="Isaiah">
-
 
       <div id="name-result"
         class="alert alert-secondary mt-3 mb-0"
@@ -70,7 +69,7 @@
    <!-- section B.4-->
    <section id="greet-section" class="card mb-4">
     <div class="card-body">
-      <h2 class="h4">1. /api/slow (text response)</h2>
+      <h2 class="h4">4. /api/slow (text response)</h2>
       <button id="slow-btn"
         class="btn btn-primary">
         Fetch /api/greet
@@ -83,6 +82,31 @@
         Click the button...
       </div>
     </div>
+
+   </section >
+
+   <section id="author-section" class="card mb-4">
+    <div class="card-body"> 
+
+
+    
+        <h2>5. Form</h2>
+        <form action="">
+            <input id="msg-text" type="text" value="Hello there">
+
+
+            <input id="msg-author" type="text" value="Isaiah">
+
+            <div id="form-result"
+              class="alert alert-secondary mt-3 mb-0"
+              role="alert">
+              Click the button...
+            </div>
+
+
+        </form>
+    </div>
+
    </section>
     
  
@@ -128,20 +152,24 @@
 
     //time button
     document.getElementById('time-btn')
-        .addEventListener('click', () => {
-          fetch('/api/time')
-            .then(statusCheck)
-            .then(res => res.text())
-            .then(text => {
-              document.getElementById('time-result')
-                .textContent = text;
-            })
-            .catch(error => {
-              document.getElementById('time-result')
-                .textContent = 'Error: '
-                  + error.message;
-            });
+        .addEventListener('click', async () => {
+          try {
+            const response =
+              await fetch('/api/time');
+            await statusCheck(response);
+            const data =
+              await response.json();
+            document.getElementById(
+              'time-result').textContent =
+                data.message + ': '
+                + data.currentTime;
+          } catch (error) {
+            document.getElementById(
+              'time-result').textContent =
+                'Error: ' + error.message;
+          }
         });
+
 
 
 
@@ -156,13 +184,13 @@
             document.getElementById('name-result').textContent = data.greeting;
             
           })
+
           .catch(error => {
             /* handle error */
             document.getElementById('name-result')
                 .textContent = 'Error: '
                   + error.message;
           });
-
 
 
 
@@ -191,6 +219,48 @@
                 });
             });
 
+
+
+            async function postMessage() {
+              const text = document.getElementById(
+                'msg-text').value;
+              const author = document.getElementById(
+                'msg-author').value;
+              try {
+                const response = await fetch(
+                  '/api/messages', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type':
+                        'application/json'
+                    },
+                    body: JSON.stringify(
+                      { text, author })
+                });
+                if (!response.ok) {
+                  const errData =
+                    await response.json();
+                  throw new Error(errData.error);
+                }
+                const newMsg =
+                  await response.json();
+                // Display the newly created message
+
+                
+                document.getElementById(
+                    'form-result').textContent =
+                      'Error: ' + text;
+
+              } catch (error) {
+                // Display error
+                document.getElementById(
+                    'form-result').textContent =
+                      'Error: ' + error.message;
+
+
+
+              }
+            }
 
 
 
