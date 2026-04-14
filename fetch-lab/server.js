@@ -119,7 +119,20 @@ app.post('/api/messages', (req, res) => {
 });
 
 
+/***************************************************************************
+ * LAB 9 SECTION
+ */
+app.get('/api/headers', (req, res) => {
+  res.json(req.headers);
+});
+
+
+
+//********************************************************************************* */
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+

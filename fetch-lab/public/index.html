@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1">
+  <title>Fetch Lab</title>
+  <!-- IMPORT BOOTSTRAP HERE! -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+<body class="bg-light">
+<main class="container py-4">
+  <h1 class="mb-4">Fetch Lab</h1>
+ 
+  <section id="hello-section" class="card mb-4">
+    <div class="card-body">
+      <h2 class="h4">1. Hello (text response)</h2>
+      <button id="hello-btn"
+        class="btn btn-primary">
+        Fetch /hello
+      </button>
+      <div id="hello-result"
+        class="alert alert-secondary mt-3 mb-0"
+        role="alert">
+        Click the button...
+      </div>
+    </div>
+  </section>
+
+  <!-- You will add more sections below -->
+   <section id="time-section" class="card mb-4">
+    <div class="card-body">
+      <h2 class="h4">1. /api/time (text response)</h2>
+      <button id="time-btn"
+        class="btn btn-primary">
+        Fetch /api/time
+      </button>
+      <div id="time-result"
+        class="alert alert-secondary mt-3 mb-0"
+        role="alert">
+        Click the button...
+      </div>
+    </div>
+   </section>
+   
+
+    <!-- part B.3-->
+   <section id="greet-section" class="card mb-4">
+    <div class="card-body">
+      <h2 class="h4">1. /api/greet (text response)</h2>
+      <button id="greet-btn"
+        class="btn btn-primary">
+        Fetch /api/greet
+      </button>
+
+      <input id="name-input" type="text" value="Isaiah">
+
+
+      <div id="name-result"
+        class="alert alert-secondary mt-3 mb-0"
+        role="alert">
+        Click the button...
+      </div>
+    </div>
+   </section>
+
+
+   <!-- section B.4-->
+   <section id="greet-section" class="card mb-4">
+    <div class="card-body">
+      <h2 class="h4">1. /api/slow (text response)</h2>
+      <button id="slow-btn"
+        class="btn btn-primary">
+        Fetch /api/greet
+      </button>
+
+
+      <div id="slow-result"
+        class="alert alert-secondary mt-3 mb-0"
+        role="alert">
+        Click the button...
+      </div>
+    </div>
+   </section>
+    
+ 
+  <script>
+  // Your fetch code goes here
+    // Put this near the top of your <script> tag
+    function statusCheck(response) {
+      if (response.ok) return response;
+      return response.json()
+        .then(errData => {
+          const msg = errData.error
+            || ('HTTP ' + response.status);
+          throw new Error(msg);
+        })
+        .catch(() => {
+          throw new Error('HTTP ' + response.status);
+        });
+    }
+
+    
+
+
+    //hello button
+    document.getElementById('hello-btn')
+        .addEventListener('click', () => {
+          fetch('/hello')
+            .then(statusCheck)
+            .then(res => res.text())
+            .then(text => {
+              document.getElementById('hello-result')
+                .textContent = text;
+            })
+            .catch(error => {
+              document.getElementById('hello-result')
+                .textContent = 'Error: '
+                  + error.message;
+            });
+        }); 
+        
+        
+    
+
+
+    //time button
+    document.getElementById('time-btn')
+        .addEventListener('click', () => {
+          fetch('/api/time')
+            .then(statusCheck)
+            .then(res => res.text())
+            .then(text => {
+              document.getElementById('time-result')
+                .textContent = text;
+            })
+            .catch(error => {
+              document.getElementById('time-result')
+                .textContent = 'Error: '
+                  + error.message;
+            });
+        });
+
+
+
+        /* part B.3*/ 
+        const name = document.getElementById(
+          'name-input').value;
+        fetch('/api/greet/' + name)
+          .then(statusCheck)
+          .then(res => res.json())
+          .then(data => {
+            /* display data.greeting */
+            document.getElementById('name-result').textContent = data.greeting;
+            
+          })
+          .catch(error => {
+            /* handle error */
+            document.getElementById('name-result')
+                .textContent = 'Error: '
+                  + error.message;
+          });
+
+
+
+
+          document.getElementById('slow-btn')
+            .addEventListener('click', () => {
+              const resultDiv =
+                document.getElementById('slow-result');
+              resultDiv.textContent =
+                'Loading... please wait';
+              resultDiv.className =
+                'alert alert-secondary mt-3';
+            
+              fetch('/api/slow')
+                .then(statusCheck)
+                .then(res => res.json())
+                .then(data => {
+                  resultDiv.textContent = data.message;
+                  resultDiv.className =
+                    'alert alert-success mt-3';
+                })
+                .catch(error => {
+                  resultDiv.textContent =
+                    'Error: ' + error.message;
+                  resultDiv.className =
+                    'alert alert-danger mt-3';
+                });
+            });
+
+
+
+
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</main>
+</body>
+</html>
+
