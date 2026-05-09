@@ -20,6 +20,8 @@ app.get('/hello', (req, res) => {
     res.type('text').send('Hello from the server!');
 });
 
+
+
 app.get('/api/time', (req, res) => {
     const data = {
 
@@ -29,6 +31,9 @@ app.get('/api/time', (req, res) => {
     res.type('json').send(data);
 });
 
+
+
+
 app.get('/api/greet/:name', (req, res) => {
     const name = req.params.name;
     const data = {
@@ -37,6 +42,11 @@ app.get('/api/greet/:name', (req, res) => {
     res.type('json').send(data);
 });
 
+
+
+
+
+//
 app.get('/api/math/', (req, res) => {
     let a = parseInt(req.query.a, 10);
     let b =  parseInt(req.query.b, 10) ;
@@ -78,6 +88,11 @@ app.get('/api/slow', (req, res) => {
   }, 3000);
 });
 
+
+
+
+
+
 app.get('/api/unreliable', (req, res) => {
   const rand = Math.random();
   if (rand < 0.5) {
@@ -92,6 +107,10 @@ app.get('/api/unreliable', (req, res) => {
   }
 });
 
+
+
+
+
 app.get('/api/messages', (req,res) =>{
     const data = {
         "messages": messages,
@@ -99,6 +118,10 @@ app.get('/api/messages', (req,res) =>{
     res.type('json').send(data);
     
 });
+
+
+
+
 
 app.post('/api/messages', (req, res) => {
     const { text, author } = req.body;
